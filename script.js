@@ -1,15 +1,9 @@
-import { BASE_URL } from './config';
+import { BASE_URL } from './config.js';
+import formattedDate from './utils.js';
 
 let centers = [];
 const cards = document.querySelector('.cards');
 const searchBtn = document.querySelector('.searchBox').querySelector('button');
-
-const today = new Date();
-const formattedDate = `
-${today.getDate()}-
-${today.getMonth() + 1}-
-${today.getFullYear()}
-`;
 
 function cowinData(pincode) {
   if (pincode.length !== 6) {
@@ -17,7 +11,7 @@ function cowinData(pincode) {
     return;
   }
 
-  let url = `${BASE_URL}/findByPin?pincode=${pincode}&date=${formattedDate}`;
+  let url = `${BASE_URL}/findByPin?pincode=${pincode}&date=${formattedDate()}`;
   const xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   xhr.onload = function () {
