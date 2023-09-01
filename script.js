@@ -10,6 +10,11 @@ ${today.getFullYear()}
 `;
 
 function cowinData(pincode) {
+  if (pincode.length !== 6) {
+    alert('Enter a valid 6-digit pincode');
+    return;
+  }
+
   let url = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${formattedDate}`;
   const xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
