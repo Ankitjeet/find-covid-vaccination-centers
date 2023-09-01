@@ -2,14 +2,27 @@ import { BASE_URL } from './config.js';
 import formattedDate from './utils.js';
 
 const cards = document.querySelector('.cards');
-const searchBtn = document.querySelector('.searchBox').querySelector('button');
+const searchBtn = document.querySelector('.searchBox button');
+const input = document.querySelector('#input');
 
-const cowinData = (pincode) => {
+const fetchData = () => {
+  const pincode = input.value.trim();
+  cards.innerHTML = '';
+
+  if (!pincode) {
+    alert('Enter pincode in the search box');
+    return;
+  }
+
   if (pincode.length !== 6) {
     alert('Enter a valid 6-digit pincode');
     return;
   }
 
+  cowinData(pincode);
+};
+
+const cowinData = (pincode) => {
   const url = `${BASE_URL}/findByPin?pincode=${pincode}&date=${formattedDate()}`;
 
   fetch(url)
@@ -20,8 +33,9 @@ const cowinData = (pincode) => {
       return response.json();
     })
     .then((data) => {
-      if (data.sessions && data.sessions.length > 0) {
-        let content = data.sessions
+      const sessions = data?.sessions || [];
+      if (sessions.length > 0) {
+        const content = sessions
           .map((session) => {
             const details = [
               ['Center Address', session.address],
@@ -61,25 +75,8 @@ const cowinData = (pincode) => {
     });
 };
 
-const input = document.querySelector('#input');
 input.addEventListener('keypress', (e) => {
-  if (e.which === 13) {
-    let pincode = input.value;
-    cards.innerHTML = '';
-    if (pincode === '') {
-      alert('Enter pincode in the search box');
-    } else if (pincode !== '') {
-      cowinData(pincode);
-    }
-  }
+  if (e.which === 13) fetchData();
 });
 
-searchBtn.addEventListener('click', () => {
-  let pincode = input.value;
-  cards.innerHTML = '';
-  if (pincode === '') {
-    alert('Enter pincode in the search box');
-  } else if (pincode !== '') {
-    cowinData(pincode);
-  }
-});
+searchBtn.addEventListener('click', fetchData);
