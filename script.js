@@ -1,23 +1,23 @@
 let centers = [];
-const cards = document.querySelector(".cards");
-const searchBtn = document.querySelector(".searchBox").querySelector("button");
+const cards = document.querySelector('.cards');
+const searchBtn = document.querySelector('.searchBox').querySelector('button');
 
-let today, d, m, y;
-today = new Date();
-d = today.getDate();
-m = today.getMonth() + 1;
-y = today.getFullYear();
-today = `${d}-${m}-${y}`;
+const today = new Date();
+const formattedDate = `
+${today.getDate()}-
+${today.getMonth() + 1}-
+${today.getFullYear()}
+`;
 
 function cowinData(pincode) {
-  let url = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${today}`;
+  let url = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${formattedDate}`;
   const xhr = new XMLHttpRequest();
-  xhr.open("GET", url, true);
+  xhr.open('GET', url, true);
   xhr.onload = function () {
     if (this.status === 200) {
       let data = JSON.parse(this.responseText);
-      
-      if(data.sessions !== []){
+
+      if (data.sessions !== []) {
         data.sessions.map((e, i) => {
           let centerInfo = [
             e.name,
@@ -68,49 +68,48 @@ function cowinData(pincode) {
   </h3>
   <h3>
     <span class="category">Available Slots - </span>
-     ${centers[i][8].join(" | ")}
+     ${centers[i][8].join(' | ')}
   </h3>
     </div>
     </div>`;
           cards.innerHTML += code;
         });
         // console.log(data.sessions.length);
-        if(data.sessions.length === 0){
-          alert("No Vaccinations Available")
+        if (data.sessions.length === 0) {
+          alert('No Vaccinations Available');
         }
-        centers = []
-      } 
-
-
-    } else{
-        alert("Some error occured")
+        centers = [];
+      }
+    } else {
+      alert('Some error occured');
     }
   };
 
   xhr.send();
 }
 
-const input = document.querySelector("#input")
-input.addEventListener("keypress", (e) => {
-    if (e.which === 13) {
-        let pincode = input.value;
-        cards.innerHTML = "";
-        if (pincode === "") {
-            alert("Enter pincode in the search box")
-        } else if (pincode !== "") {
-            cowinData(pincode)
-        }
-}})
+const input = document.querySelector('#input');
+input.addEventListener('keypress', (e) => {
+  if (e.which === 13) {
+    let pincode = input.value;
+    cards.innerHTML = '';
+    if (pincode === '') {
+      alert('Enter pincode in the search box');
+    } else if (pincode !== '') {
+      cowinData(pincode);
+    }
+  }
+});
 
-searchBtn.addEventListener("click",() => {
-        let pincode = input.value;
-        cards.innerHTML = "";
-        if (pincode === "") {
-            alert("Enter pincode in the search box")
-        } else if (pincode !== "") {
-            cowinData(pincode)
-        }
-})
+searchBtn.addEventListener('click', () => {
+  let pincode = input.value;
+  cards.innerHTML = '';
+  if (pincode === '') {
+    alert('Enter pincode in the search box');
+  } else if (pincode !== '') {
+    cowinData(pincode);
+  }
+});
 
 // cowinData(110001);
 // cowinData(462030);
