@@ -152,6 +152,7 @@ body {
 .opening img {
   margin-top: 1rem;
   width: 100vw;
+  height: 85vh;
 }
 
 .opening h1 {
