@@ -1,3 +1,5 @@
+import { BASE_URL } from './config';
+
 let centers = [];
 const cards = document.querySelector('.cards');
 const searchBtn = document.querySelector('.searchBox').querySelector('button');
@@ -15,7 +17,7 @@ function cowinData(pincode) {
     return;
   }
 
-  let url = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${formattedDate}`;
+  let url = `${BASE_URL}/findByPin?pincode=${pincode}&date=${formattedDate}`;
   const xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   xhr.onload = function () {
