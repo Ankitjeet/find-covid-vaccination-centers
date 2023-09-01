@@ -83,6 +83,3 @@ searchBtn.addEventListener('click', () => {
     cowinData(pincode);
   }
 });
-
-// cowinData(110001);
-// cowinData(462030);
